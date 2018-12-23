@@ -2,7 +2,6 @@ package com.rpc.server;
 
 import com.rpc.common.RpcRequest;
 import com.rpc.common.RpcResponse;
-import com.rpc.common.RpcService;
 import com.rpc.protocol.RpcDecoder;
 import com.rpc.protocol.RpcEncoder;
 import com.rpc.protocol.StringUtil;
@@ -65,10 +64,6 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
             for (Object serviceBean : serviceBeanMap.values()) {
                 RpcService rpcService = serviceBean.getClass().getAnnotation(RpcService.class);
                 String serviceName = rpcService.value().getName();
-                String serviceVersion = rpcService.version();
-                if (StringUtil.isNotEmpty(serviceVersion)) {
-                    serviceName += "-" + serviceVersion;
-                }
                 handlerMap.put(serviceName, serviceBean);
             }
         }
@@ -87,10 +82,10 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
                 @Override
                 public void initChannel(SocketChannel channel) throws Exception {
                     channel.pipeline()
-                    .addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0))
-                    .addLast(new RpcDecoder(RpcRequest.class)) // 解码 RPC 请求
-                    .addLast(new RpcEncoder(RpcResponse.class)) // 编码 RPC 响应
-                    .addLast(new RpcServerHandler(handlerMap)); // 处理 RPC 请求
+                            .addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0))
+                            .addLast(new RpcDecoder(RpcRequest.class)) // 解码 RPC 请求
+                            .addLast(new RpcEncoder(RpcResponse.class)) // 编码 RPC 响应
+                            .addLast(new RpcServerHandler(handlerMap)); // 处理 RPC 请求
                 }
             });
             bootstrap.option(ChannelOption.SO_BACKLOG, 1024);

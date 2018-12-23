@@ -1,4 +1,4 @@
-package com.rpc.common;
+package com.rpc.server;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -19,9 +19,4 @@ public @interface RpcService {
      * 服务接口类
      */
     Class<?> value();
-
-    /**
-     * 服务版本号
-     */
-    String version() default "";
 }

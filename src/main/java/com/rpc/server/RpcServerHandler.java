@@ -50,10 +50,6 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
     private Object handle(RpcRequest request) throws Exception {
         // 获取服务对象
         String serviceName = request.getInterfaceName();
-        String serviceVersion = request.getServiceVersion();
-        if (StringUtil.isNotEmpty(serviceVersion)) {
-            serviceName += "-" + serviceVersion;
-        }
         Object serviceBean = handlerMap.get(serviceName);
         if (serviceBean == null) {
             throw new RuntimeException(String.format("can not find service bean by key: %s", serviceName));

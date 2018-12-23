@@ -1,6 +1,6 @@
 package com.rpc.example.server;
 
-import com.rpc.common.RpcService;
+import com.rpc.server.RpcService;
 import com.rpc.example.api.HelloService;
 
 @RpcService(HelloService.class)
